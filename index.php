@@ -1,3 +1,6 @@
+<?php
+require_once("config.php");
+?>
 <!DOCTYPE html>
 <html lang="ru">
   <head>
@@ -15,26 +18,26 @@
         <section class="section hero">
           <div class="container">
             <header class="header">
-              <div class="header__logo"><a class="logo" href="#"><img class="logo__icon" src="./img/icons/logo.svg"></a></div>
+              <div class="header__logo"><a class="logo" href="/"><img class="logo__icon" src="./img/icons/logo.svg"></a></div>
               <div class="header__menu">
                 <nav class="nav">
                   <ul class="nav__list">
-                    <li class="nav__item"><a class="nav__link" href="1">о нас</a>
+                    <li class="nav__item"><a class="nav__link" href="#link-about">о нас</a>
                     </li>
-                    <li class="nav__item"><a class="nav__link" href="2">бургеры</a>
+                    <li class="nav__item"><a class="nav__link" href="#link-burgers">бургеры</a>
                     </li>
-                    <li class="nav__item"><a class="nav__link" href="3">команда</a>
+                    <li class="nav__item"><a class="nav__link" href="#link-team">команда</a>
                     </li>
-                    <li class="nav__item"><a class="nav__link" href="4">меню</a>
+                    <li class="nav__item"><a class="nav__link" href="#link-menu">меню</a>
                     </li>
-                    <li class="nav__item"><a class="nav__link" href="5">отзывы</a>
+                    <li class="nav__item"><a class="nav__link" href="#link-reviews">отзывы</a>
                     </li>
-                    <li class="nav__item"><a class="nav__link" href="7">контакты</a>
+                    <li class="nav__item"><a class="nav__link" href="#link-map">контакты</a>
                     </li>
                   </ul>
                 </nav>
               </div>
-              <div class="header__links"><a class="order-link btn" href="6">Заказать</a><a class="hamburger-menu-link" href="">
+              <div class="header__links"><a class="order-link btn" href="#link-lets-order">Заказать</a><a class="hamburger-menu-link" href="">
                   <div class="hamburger-menu-link__bars"></div></a></div>
             </header>
             <div class="hero__container">
@@ -48,7 +51,7 @@
             </div>
           </div>
         </section>
-        <section class="section best">
+        <section class="section best" id="link-about">
           <div class="container">
             <div class="section__title section__title_black">Мы лучшие</div>
             <ul class="best__list">
@@ -94,7 +97,7 @@
             </ul>
           </div>
         </section>
-        <section class="section burgers">
+        <section class="section burgers" id="link-burgers">
           <div class="container">
             <div class="burger-slider-wrap">
               <div class="burger-slider__controls"><a class="burger-slider__btn burger-slider__btn_next" href="#">
@@ -122,7 +125,7 @@
                       <div class="burgers-slider__price">
                         <div class="burgers-slider__price-amount">500</div>
                         <div class="burgers-slider__price-measure">рублей</div>
-                      </div><a class="burgers-slider__buy btn" href="6">Заказать</a>
+                      </div><a class="burgers-slider__buy btn" href="#link-lets-order">Заказать</a>
                     </div>
                   </div>
                 </li>
@@ -143,7 +146,7 @@
                       <div class="burgers-slider__price">
                         <div class="burgers-slider__price-amount">500</div>
                         <div class="burgers-slider__price-measure">рублей</div>
-                      </div><a class="burgers-slider__buy btn" href="6">Заказать</a>
+                      </div><a class="burgers-slider__buy btn" href="#link-lets-order">Заказать</a>
                     </div>
                   </div>
                 </li>
@@ -164,7 +167,7 @@
                       <div class="burgers-slider__price">
                         <div class="burgers-slider__price-amount">500</div>
                         <div class="burgers-slider__price-measure">рублей</div>
-                      </div><a class="burgers-slider__buy btn" href="6">Заказать</a>
+                      </div><a class="burgers-slider__buy btn" href="#link-lets-order">Заказать</a>
                     </div>
                   </div>
                 </li>
@@ -185,7 +188,7 @@
                       <div class="burgers-slider__price">
                         <div class="burgers-slider__price-amount">500</div>
                         <div class="burgers-slider__price-measure">рублей</div>
-                      </div><a class="burgers-slider__buy btn" href="6">Заказать</a>
+                      </div><a class="burgers-slider__buy btn" href="#link-lets-order">Заказать</a>
                     </div>
                   </div>
                 </li>
@@ -193,7 +196,7 @@
             </div>
           </div>
         </section>
-        <section class="section team">
+        <section class="section team" id="link-team">
           <div class="team__section">
             <div class="section__title">Команда</div>
             <ul class="team-acco">
@@ -244,7 +247,7 @@
             </ul>
           </div>
         </section>
-        <section class="section menu">
+        <section class="section menu" id="link-menu">
           <div class="section__title section__title_white menu__title">Меню</div>
           <ul class="menu-acco">
             <li class="menu-acco__item"><a class="menu-acco__trigger" href="#" style="background-image: url('./img/bg/menu/meats.jpg');">
@@ -276,7 +279,7 @@
             </li>
           </ul>
         </section>
-        <section class="section reviews">
+        <section class="section reviews" id="link-reviews">
           <ul class="reviews__list">
             <li class="reviews__item">
               <div class="review">
@@ -361,47 +364,47 @@
           </ul>
         </section>
         <section class="section order">
-          <div class="container">
+          <div class="container" id="link-lets-order">
             <div class="section__title">Закажите доставку</div>
             <div class="order__form">
-              <form class="order__form-tag" id="order-form">
+              <form class="order__form-tag" id="order-form" action="try-order.php" method="POST">
                 <div class="order__form-col">
                   <div class="order__form-row order__form-row_double">
                     <label class="order__form-block">
                       <div class="order__form-label">Имя</div>
-                      <input class="order__form-input" name="name" type="text" placeholder="">
+                      <input class="order__form-input" name="name" type="text" value="<?=$curUser->first_name;?>" placeholder="" required>
                     </label>
                     <label class="order__form-block">
                       <div class="order__form-label">Телефон</div>
-                      <input class="order__form-input phone-mask" name="phone" type="text" placeholder="">
+                      <input class="order__form-input phone-mask" name="phone" value="<?=$curUser->phone;?>" type="text" placeholder="" required>
                     </label>
                   </div>
                   <div class="order__form-row order__form-row_double">
                     <label class="order__form-block">
                       <div class="order__form-label">email</div>
-                      <input class="order__form-input" name="email" type="email" placeholder="">
+                      <input class="order__form-input" name="email" type="email" value="<?=$curUser->mail;?>" placeholder="" required>
                     </label>
                     <label class="order__form-block">
                       <div class="order__form-label">Улица</div>
-                      <input class="order__form-input" name="street" type="text" placeholder="">
+                      <input class="order__form-input" name="street" type="text" value="<?=$curUser->street;?>" placeholder="" required>
                     </label>
                   </div>
                   <div class="order__form-row order__form-row_quatro">
                     <label class="order__form-block">
                       <div class="order__form-label">Дом</div>
-                      <input class="order__form-input" name="home" type="text" placeholder="">
+                      <input class="order__form-input" name="home" type="text" value="<?=$curUser->house;?>" placeholder="" required>
                     </label>
                     <label class="order__form-block">
                       <div class="order__form-label">Корпус</div>
-                      <input class="order__form-input" name="part" type="text" placeholder="">
+                      <input class="order__form-input" name="part" type="text" value="<?=$curUser->building;?>" placeholder="">
                     </label>
                     <label class="order__form-block">
                       <div class="order__form-label">Квартира</div>
-                      <input class="order__form-input" name="appt" type="text" placeholder="">
+                      <input class="order__form-input" name="appt" type="text" value="<?=$curUser->apartment;?>" placeholder="">
                     </label>
                     <label class="order__form-block">
                       <div class="order__form-label">Этаж</div>
-                      <input class="order__form-input" name="floor" type="text" placeholder="">
+                      <input class="order__form-input" name="floor" type="text" value="<?=$curUser->floor;?>" placeholder="">
                     </label>
                   </div>
                 </div>
@@ -415,26 +418,27 @@
                   <div class="order__form-buttons">
                     <div class="order__form-row">
                       <label class="order__radio">
-                        <input class="order__radio-elem" name="payment" type="radio">
+                        <input class="order__radio-elem" name="payment" type="radio" value="need_change">
                         <div class="order__radio-fake"></div>
                         <div class="order__radio-title">Потребуется сдача</div>
                       </label>
                       <label class="order__radio">
-                        <input class="order__radio-elem" name="payment" type="radio">
+                        <input class="order__radio-elem" name="payment" type="radio" value="card">
                         <div class="order__radio-fake"></div>
                         <div class="order__radio-title">Оплата по карте</div>
                       </label>
                     </div>
                     <div class="order__form-row">
                       <label class="order__radio order__radio_checkbox">
-                        <input class="order__radio-elem" name="callback" type="checkbox">
+                        <input class="order__radio-elem" name="callback" type="checkbox" value="1">
                         <div class="order__radio-fake"></div>
                         <div class="order__radio-title">Не перезванивать</div>
                       </label>
                     </div>
                     <div class="order__form-row">
                       <input class="order__form-button" name="" type="submit" value="Заказать">
-                      <input class="order__form-button order__form-button_reset" name="" type="reset" value="Очистить">
+                      <!--<input class="order__form-button order__form-button_reset" name="" type="reset" value="Очистить">-->
+                      <a href="try-order.php?logout" class="order__form-button order__form-button_reset" style="text-decoration: none;">Забыть меня</a>
                     </div>
                   </div>
                 </div>
@@ -442,7 +446,7 @@
             </div>
           </div>
         </section>
-        <section class="section map">
+        <section class="section map" id="link-map">
           <div class="yandex-map" id="map"></div>
           <footer class="footer">
             <div class="container">
