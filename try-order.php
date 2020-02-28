@@ -44,16 +44,16 @@ if ($payment == 'need_change') {
 
 if (!$curUser->isLogged() || $curUser->mail != $mail) {
     // register user
-    $u = new User();
+    $user = new User();
 
     try {
-        $userId = $u->findByMail($mail);
+        $userId = $user->findByMail($mail);
     } catch (Exception $e) {
         die($e->getMessage());
     }
 
     if ($userId === false){
-        $userId = $u->register($name, $phone, $mail, $street, $home, $part, $appt, $floor);
+        $userId = $user->register($name, $phone, $mail, $street, $home, $part, $appt, $floor);
     } else {
         $curUser->updateInformation($userId, $name, $phone, $street, $home, $part, $appt, $floor);
     }
