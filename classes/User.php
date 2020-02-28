@@ -17,11 +17,6 @@ class User
     public $apartment;
     public $floor;
 
-    public function __construct()
-    {
-        
-    }
-
     private function findUser($userId = 0, $mail = '')
     {
         $q = "SELECT * FROM users WHERE ";
