@@ -5,10 +5,12 @@
   Все что касается пользаков
 */
 
+namespace FinalWork;
+
 class User
 {
     public $id;
-    public $first_name;
+    public $firstName;
     public $phone;
     public $mail;
     public $street;
@@ -66,7 +68,7 @@ class User
     {
         /* table `users` */
         $this->id = $userData['id'];
-        $this->first_name = $userData['first_name'];
+        $this->firstName = $userData['first_name'];
         $this->phone = $userData['phone'];
         $this->mail = $userData['mail'];
         $this->street = $userData['street'];

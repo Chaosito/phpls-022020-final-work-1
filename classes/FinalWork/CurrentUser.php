@@ -5,9 +5,11 @@
   Текущий пользователь (вошедший в систему), расширяет базовый класс User
 */
 
+namespace FinalWork;
+
 class CurrentUser extends User
 {
-    private $_logged = false;
+    private $logged = false;
 
     public function __construct()
     {
@@ -23,13 +25,13 @@ class CurrentUser extends User
         }
 
         if ($this->id) {
-            $this->_logged = true;
+            $this->logged = true;
         }
     }
 
     public function updateInformation(FormData $formData)
     {
-        $this->first_name = $formData->name;
+        $this->firstName = $formData->name;
         $this->phone = $formData->phone;
         $this->street = $formData->street;
         $this->house = $formData->house;
@@ -38,7 +40,7 @@ class CurrentUser extends User
         $this->floor = $formData->floor;
 
         $userData = [
-            $this->first_name,
+            $this->firstName,
             $this->phone,
             $this->street,
             $this->house,
@@ -61,7 +63,7 @@ class CurrentUser extends User
 
     public function isLogged()
     {
-        return $this->_logged;
+        return $this->logged;
     }
 
     public function login($uid, $mail)
@@ -73,7 +75,7 @@ class CurrentUser extends User
 
     public function logout()
     {
-        $this->_logged = false;
+        $this->logged = false;
         if (isset($_SESSION['user_id'])) {
             unset($_SESSION['user_id']);
         }

@@ -1,5 +1,7 @@
 <?php
 
+namespace FinalWork;
+
 class Order
 {
     private $id = 0;

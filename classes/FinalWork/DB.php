@@ -5,6 +5,8 @@
   Работа с БД через PDO
 */
 
+namespace FinalWork;
+
 /**
  * @method static lastInsertId()
  */
@@ -23,14 +25,14 @@ class DB
     {
         if (self::$instance === null) {
             $opt  = array(
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => true,
+                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+                \PDO::ATTR_EMULATE_PREPARES   => true,
             );
 
-            $opt[PDO::ATTR_ERRMODE] = (Settings::DEBUG_MODE) ? PDO::ERRMODE_EXCEPTION : PDO::ERRMODE_SILENT;
+            $opt[\PDO::ATTR_ERRMODE] = (Settings::DEBUG_MODE) ? \PDO::ERRMODE_EXCEPTION : \PDO::ERRMODE_SILENT;
 
             $dsn = 'mysql:host='.Settings::MYSQL_HOST.';dbname='.Settings::MYSQL_DB.';charset='.Settings::MYSQL_CHAR;
-            self::$instance = new PDO($dsn, Settings::MYSQL_USER, Settings::MYSQL_PASS, $opt);
+            self::$instance = new \PDO($dsn, Settings::MYSQL_USER, Settings::MYSQL_PASS, $opt);
             self::$instance->exec("SET NAMES ".Settings::MYSQL_CHAR);
         }
         return self::$instance;

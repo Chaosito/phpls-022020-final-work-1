@@ -1,5 +1,7 @@
 <?php
 
+namespace FinalWork;
+
 class FormData
 {
     public $name;

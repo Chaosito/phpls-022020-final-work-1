@@ -1,17 +1,36 @@
 <?php
 require_once("../config.php");
 
-$allUsers = DB::run("SELECT id, DATE_FORMAT(dt_reg, '%d.%m.%Y %H:%i:%s') AS dt, first_name, mail FROM users")->fetchAll();
-$allOrders = DB::run("SELECT id, DATE_FORMAT(order_date, '%d.%m.%Y %H:%i:%s') AS dt, (SELECT first_name FROM users WHERE users.id = orders.user_id) AS first_name, address FROM orders")->fetchAll();
+$allUsers = FinalWork\DB::run("
+    SELECT 
+        id, 
+        DATE_FORMAT(dt_reg, '%d.%m.%Y %H:%i:%s') AS dt, 
+        first_name, 
+        mail 
+    FROM 
+        users
+")->fetchAll();
+
+$allOrders = FinalWork\DB::run("
+    SELECT 
+        id, 
+        DATE_FORMAT(order_date, '%d.%m.%Y %H:%i:%s') AS dt, 
+        (SELECT first_name FROM users WHERE users.id = orders.user_id) AS first_name, 
+        address 
+    FROM 
+        orders
+")->fetchAll();
 
 $usersBody = "";
 foreach ($allUsers as $val) {
-    $usersBody .= "<tr><td>{$val['id']}</td><td>{$val['dt']}</td><td>{$val['first_name']}</td><td>{$val['mail']}</td></tr>";
+    $usersBody .= "<td>{$val['id']}</td><td>{$val['dt']}</td><td>{$val['first_name']}</td><td>{$val['mail']}</td>";
+    $usersBody = '<tr>'.$usersBody.'</tr>';
 }
 
 $ordersBody = "";
 foreach ($allOrders as $val) {
-    $ordersBody .= "<tr><td>{$val['id']}</td><td>{$val['dt']}</td><td>{$val['first_name']}</td><td>{$val['address']}</td></tr>";
+    $ordersBody .= "<td>{$val['id']}</td><td>{$val['dt']}</td><td>{$val['first_name']}</td><td>{$val['address']}</td>";
+    $ordersBody = '<tr>'.$ordersBody.'</tr>';
 }
 
 
@@ -33,7 +52,9 @@ foreach ($allOrders as $val) {
         <section class="section hero">
             <div class="container">
                 <header class="header">
-                    <div class="header__logo"><a class="logo" href="/"><img class="logo__icon" src="../img/icons/logo.svg"></a></div>
+                    <div class="header__logo">
+                        <a class="logo" href="/"><img class="logo__icon" src="../img/icons/logo.svg"></a>
+                    </div>
                     <div class="header__menu">
                         <nav class="nav">
                             <ul class="nav__list">
@@ -52,11 +73,13 @@ foreach ($allOrders as $val) {
                             </ul>
                         </nav>
                     </div>
-                    <div class="header__links"><a class="order-link btn" href="/index.php#link-lets-order">Заказать</a><a class="hamburger-menu-link" href="">
-                            <div class="hamburger-menu-link__bars"></div></a></div>
+                    <div class="header__links">
+                        <a class="order-link btn" href="/index.php#link-lets-order">Заказать</a>
+                        <a class="hamburger-menu-link" href=""><div class="hamburger-menu-link__bars"></div></a>
+                    </div>
                 </header>
                 <div class="hero__container">
-                    <div class="hero__content" style="background-color: white;opacity:.8;min-height:300px;padding:10px;display: block;">
+                    <div class="hero__content" id="adminka-bg">
                         <table width="100%" border="1">
                             <thead>
                                 <tr><th colspan="4">Список всех зарегистрированных пользователей</th></tr>
@@ -92,4 +115,13 @@ foreach ($allOrders as $val) {
     </div>
 </div>
 </body>
+<style>
+    #adminka-bg {
+        background-color: white;
+        opacity:.8;
+        min-height:300px;
+        padding:10px;
+        display: block;
+    }
+</style>
 </html>

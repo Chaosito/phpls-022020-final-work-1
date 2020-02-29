@@ -5,6 +5,8 @@
   Настройки сайта
 */
 
+namespace FinalWork;
+
 class Settings
 {
     const DEBUG_MODE = true;

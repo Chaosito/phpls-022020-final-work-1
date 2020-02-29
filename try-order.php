@@ -1,5 +1,4 @@
 <?php
-
 require_once("config.php");
 
 if (isset($_REQUEST['logout'])) {
@@ -13,8 +12,10 @@ if (!isset($_POST['email'])) {
     exit;
 }
 
-$formData = new FormData();
-$user = new User();
+
+
+$formData = new FinalWork\FormData();
+$user = new FinalWork\User();
 
 /*
  * Если пользак не авторизован по сессии или кукам или текущая переданная почта не соответствует почте авторизованного:
@@ -35,7 +36,7 @@ if (!$curUser->isLogged() || $curUser->mail != $formData->mail) {
     $curUser->updateInformation($formData);
 }
 
-$objOrder = new Order($curUser);
+$objOrder = new FinalWork\Order($curUser);
 $orderId = $objOrder->createOrder($formData);
 
 if (!$orderId) {
