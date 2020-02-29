@@ -1,25 +1,8 @@
 <?php
 require_once("../config.php");
 
-$allUsers = FinalWork\DB::run("
-    SELECT 
-        id, 
-        DATE_FORMAT(dt_reg, '%d.%m.%Y %H:%i:%s') AS dt, 
-        first_name, 
-        mail 
-    FROM 
-        users
-")->fetchAll();
-
-$allOrders = FinalWork\DB::run("
-    SELECT 
-        id, 
-        DATE_FORMAT(order_date, '%d.%m.%Y %H:%i:%s') AS dt, 
-        (SELECT first_name FROM users WHERE users.id = orders.user_id) AS first_name, 
-        address 
-    FROM 
-        orders
-")->fetchAll();
+$allUsers = FinalWork\User::getAllUsers();
+$allOrders = FinalWork\Order::getAllOrders();
 
 $usersBody = "";
 foreach ($allUsers as $val) {

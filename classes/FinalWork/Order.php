@@ -55,4 +55,17 @@ class Order
             (!empty($user->apartment) ? ", Квартира: {$user->apartment}" : "").
             (!empty($user->floor) ? ", Этаж: {$user->floor}" : "");
     }
+
+    public static function getAllOrders()
+    {
+        return DB::run("
+            SELECT 
+                id, 
+                DATE_FORMAT(order_date, '%d.%m.%Y %H:%i:%s') AS dt, 
+                (SELECT first_name FROM users WHERE users.id = orders.user_id) AS first_name, 
+                address 
+            FROM 
+                orders
+        ")->fetchAll();
+    }
 }

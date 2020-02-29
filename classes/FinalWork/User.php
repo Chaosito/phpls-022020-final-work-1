@@ -77,4 +77,17 @@ class User
         $this->apartment = $userData['apartment'];
         $this->floor = $userData['floor'];
     }
+
+    public static function getAllUsers()
+    {
+        return DB::run("
+            SELECT 
+                id, 
+                DATE_FORMAT(dt_reg, '%d.%m.%Y %H:%i:%s') AS dt, 
+                first_name, 
+                mail 
+            FROM 
+                users
+        ")->fetchAll();
+    }
 }
