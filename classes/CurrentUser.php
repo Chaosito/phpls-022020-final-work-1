@@ -12,7 +12,9 @@ class CurrentUser extends User
     public function __construct()
     {
         // check session & cookie
-        if (empty($_SESSION['user_id']) && empty($_COOKIE["user_mail"])) return;
+        if (empty($_SESSION['user_id']) && empty($_COOKIE["user_mail"])) {
+            return;
+        }
 
         if (isset($_SESSION['user_id'])) {
             $this->findUserBy('id', $_SESSION['user_id']);
@@ -72,7 +74,9 @@ class CurrentUser extends User
     public function logout()
     {
         $this->_logged = false;
-        if (isset($_SESSION['user_id'])) unset($_SESSION['user_id']);
+        if (isset($_SESSION['user_id'])) {
+            unset($_SESSION['user_id']);
+        }
         setcookie('user_mail', '', 0, "/");
     }
 
@@ -81,4 +85,3 @@ class CurrentUser extends User
         return DB::run("SELECT COUNT(id) FROM orders WHERE user_id = ?", [$this->id])->fetchColumn();
     }
 }
-

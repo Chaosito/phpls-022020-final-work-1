@@ -29,7 +29,9 @@ class User
     {
         // Можно расширить данный метод, чтобы он принимал многомерный массив параметров
         // или возвращал большее количество пользователей (поля на выбор), но нам это ни к чему.
-        if (!in_array($fieldName, self::AVAILABLE_FIELDS_FOR_SEARCH)) return false;
+        if (!in_array($fieldName, self::AVAILABLE_FIELDS_FOR_SEARCH)) {
+            return false;
+        }
 
         $res = DB::run("SELECT * FROM users WHERE {$fieldName} = ? LIMIT 1;", [$fieldValue])->fetch();
         if ($res) {
@@ -38,7 +40,8 @@ class User
         return (bool)$res;
     }
 
-    public function register(FormData $formData){
+    public function register(FormData $formData)
+    {
         $userData = [
             $formData->name,
             $formData->phone,

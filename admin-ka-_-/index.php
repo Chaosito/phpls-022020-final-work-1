@@ -5,12 +5,12 @@ $allUsers = DB::run("SELECT id, DATE_FORMAT(dt_reg, '%d.%m.%Y %H:%i:%s') AS dt, 
 $allOrders = DB::run("SELECT id, DATE_FORMAT(order_date, '%d.%m.%Y %H:%i:%s') AS dt, (SELECT first_name FROM users WHERE users.id = orders.user_id) AS first_name, address FROM orders")->fetchAll();
 
 $usersBody = "";
-foreach ($allUsers AS $val) {
+foreach ($allUsers as $val) {
     $usersBody .= "<tr><td>{$val['id']}</td><td>{$val['dt']}</td><td>{$val['first_name']}</td><td>{$val['mail']}</td></tr>";
 }
 
 $ordersBody = "";
-foreach ($allOrders AS $val) {
+foreach ($allOrders as $val) {
     $ordersBody .= "<tr><td>{$val['id']}</td><td>{$val['dt']}</td><td>{$val['first_name']}</td><td>{$val['address']}</td></tr>";
 }
 
