@@ -76,7 +76,9 @@ mail($curUser->mail, "Заказ №{$orderId}", $mailText);
         <section class="section hero">
             <div class="container">
                 <header class="header">
-                    <div class="header__logo"><a class="logo" href="/"><img class="logo__icon" src="./img/icons/logo.svg"></a></div>
+                    <div class="header__logo">
+                        <a class="logo" href="/"><img class="logo__icon" src="./img/icons/logo.svg"></a>
+                    </div>
                     <div class="header__menu">
                         <nav class="nav">
                             <ul class="nav__list">
@@ -95,8 +97,10 @@ mail($curUser->mail, "Заказ №{$orderId}", $mailText);
                             </ul>
                         </nav>
                     </div>
-                    <div class="header__links"><a class="order-link btn" href="/index.php#link-lets-order">Заказать</a><a class="hamburger-menu-link" href="">
-                            <div class="hamburger-menu-link__bars"></div></a></div>
+                    <div class="header__links">
+                        <a class="order-link btn" href="/index.php#link-lets-order">Заказать</a>
+                        <a class="hamburger-menu-link" href=""><div class="hamburger-menu-link__bars"></div></a>
+                    </div>
                 </header>
                 <div class="hero__container">
                     <div class="hero__content">
