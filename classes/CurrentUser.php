@@ -11,28 +11,50 @@ class CurrentUser extends User
 
     public function __construct()
     {
-        $uid = 0;
-
         // check session & cookie
         if (empty($_SESSION['user_id']) && empty($_COOKIE["user_mail"])) return;
 
-        // get data from session and cookie; and authorize or not;
         if (isset($_SESSION['user_id'])) {
-            $uid = $this->findById($_SESSION['user_id']);
+            $this->findUserBy('id', $_SESSION['user_id']);
         } else {
-            $uid = $this->findByMail($_COOKIE["user_mail"]);
+            $this->findUserBy('mail', $_COOKIE["user_mail"]);
         }
 
-        if (!$uid) return;
-
-        $_SESSION['user_id'] = $uid;
-        $this->_logged = true;
+        if ($this->id) {
+            $this->_logged = true;
+        }
     }
 
-    public function updateInformation($userId, $name, $phone, $street, $home, $part, $appt, $floor)
+    public function updateInformation(FormData $formData)
     {
-        $userData = [$name, $phone, $street, $home, $part, $appt, $floor, $userId];
-        DB::run("UPDATE users SET first_name = ?, phone = ?, street = ?, house = ?, building = ?, apartment = ?, floor = ? WHERE id = ? LIMIT 1;", $userData);
+        $this->first_name = $formData->name;
+        $this->phone = $formData->phone;
+        $this->street = $formData->street;
+        $this->house = $formData->house;
+        $this->building = $formData->building;
+        $this->apartment = $formData->apartment;
+        $this->floor = $formData->floor;
+
+        $userData = [
+            $this->first_name,
+            $this->phone,
+            $this->street,
+            $this->house,
+            $this->building,
+            $this->apartment,
+            $this->floor,
+            $this->id
+        ];
+
+        DB::run("
+            UPDATE 
+                users 
+            SET 
+                first_name = ?, phone = ?, street = ?, house = ?, building = ?, apartment = ?, floor = ? 
+            WHERE 
+                id = ? 
+            LIMIT 1;
+        ", $userData);
     }
 
     public function isLogged()
@@ -54,4 +76,9 @@ class CurrentUser extends User
         setcookie('user_mail', '', 0, "/");
     }
 
+    public function getOrdersCount()
+    {
+        return DB::run("SELECT COUNT(id) FROM orders WHERE user_id = ?", [$this->id])->fetchColumn();
+    }
 }
+

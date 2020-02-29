@@ -17,44 +17,45 @@ class User
     public $apartment;
     public $floor;
 
-    private function findUser($userId = 0, $mail = '')
+    const AVAILABLE_FIELDS_FOR_SEARCH = array('id', 'mail');
+
+    /**
+     * Поиск пользователя в БД по имени и значению поля
+     * @param string $fieldName Поле таблицы БД
+     * @param string $fieldValue Значение поля
+     * @return bool Найден ли пользователь
+     */
+    public function findUserBy(string $fieldName, string $fieldValue)
     {
-        $q = "SELECT * FROM users WHERE ";
-        $res = false;
+        // Можно расширить данный метод, чтобы он принимал многомерный массив параметров
+        // или возвращал большее количество пользователей (поля на выбор), но нам это ни к чему.
+        if (!in_array($fieldName, self::AVAILABLE_FIELDS_FOR_SEARCH)) return false;
 
-        if ((int)$userId > 0) {
-            $q .= "id = ? LIMIT 1;";
-            $res = DB::run($q, array($userId))->fetch();
-        } elseif (trim($mail) != '') {
-            $q .= "mail = ? LIMIT 1;";
-            $res = DB::run($q, array($mail))->fetch();
-        }
-
+        $res = DB::run("SELECT * FROM users WHERE {$fieldName} = ? LIMIT 1;", [$fieldValue])->fetch();
         if ($res) {
             $this->fetchUser($res);
-            return $res->id;
-        } else {
-            return false;
         }
+        return (bool)$res;
     }
 
-    public function findById($uid)
-    {
-        if ((int)$uid <= 0) throw new Exception('Идентификатор пользователя не указан!');
-        $uid = $this->findUser($uid);
-        return $uid;
-    }
+    public function register(FormData $formData){
+        $userData = [
+            $formData->name,
+            $formData->phone,
+            $formData->mail,
+            $formData->street,
+            $formData->house,
+            $formData->building,
+            $formData->apartment,
+            $formData->floor
+        ];
 
-    public function findByMail($mail)
-    {
-        if ((trim($mail) == "") || (!filter_var($mail, FILTER_VALIDATE_EMAIL))) throw new Exception('E-Mail не верен!');
-        $uid = $this->findUser(0, $mail);
-        return $uid;
-    }
-
-    public function register($name, $phone, $mail, $street, $house, $building, $apartment, $floor){
-        $userData = [$name, $phone, $mail, $street, $house, $building, $apartment, $floor];
-        DB::run("INSERT INTO users (dt_reg, first_name, phone, mail, street, house, building, apartment, floor) VALUES (now(), ?, ?, ?, ?, ?, ?, ?, ?)", $userData);
+        DB::run("
+            INSERT INTO 
+                users (dt_reg, first_name, phone, mail, street, house, building, apartment, floor) 
+            VALUES 
+                (now(), ?, ?, ?, ?, ?, ?, ?, ?)
+        ", $userData);
         return DB::lastInsertId();
     }
 

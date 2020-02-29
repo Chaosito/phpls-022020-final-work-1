@@ -13,62 +13,38 @@ if (!isset($_POST['email'])) {
     exit;
 }
 
-$name = (isset($_POST['name'])) ? strip_tags(trim($_POST['name'])) : '';
-$phone = (isset($_POST['phone'])) ? strip_tags(trim($_POST['phone'])) : '';
-$mail = (isset($_POST['email'])) ? strip_tags(trim($_POST['email'])) : '';
-$street = (isset($_POST['street'])) ? strip_tags(trim($_POST['street'])) : '';
-$home = (isset($_POST['home'])) ? strip_tags(trim($_POST['home'])) : '';
-$part = (isset($_POST['part'])) ? strip_tags(trim($_POST['part'])) : '';
-$appt = (isset($_POST['appt'])) ? strip_tags(trim($_POST['appt'])) : '';
-$floor = (isset($_POST['floor'])) ? strip_tags(trim($_POST['floor'])) : '';
-$comment = (isset($_POST['comment'])) ? strip_tags(trim($_POST['comment'])) : '';
-$payment = (isset($_POST['payment'])) ? strip_tags(trim($_POST['payment'])) : '';
-$callback = (isset($_POST['callback'])) ? (int)$_POST['callback'] : 0;
+$formData = new FormData();
+$user = new User();
 
-$uid = 333;
-$addr = "Улица: {$street}, Дом: {$home}".
-    (!empty($part) ? ", Корпус: {$part}" : "").
-    (!empty($appt) ? ", Квартира: {$appt}" : "").
-    (!empty($floor) ? ", Этаж: {$floor}" : "");
-
-if ($payment == 'need_change') {
-    $needChange = 1;
-    $cardPayment = 0;
-} elseif ($payment == 'card') {
-    $needChange = 0;
-    $cardPayment = 1;
-} else {
-    $needChange = 0;
-    $cardPayment = 0;
-}
-
-if (!$curUser->isLogged() || $curUser->mail != $mail) {
-    // register user
-    $user = new User();
-
-    try {
-        $userId = $user->findByMail($mail);
-    } catch (Exception $e) {
-        die($e->getMessage());
-    }
-
-    if ($userId === false){
-        $userId = $user->register($name, $phone, $mail, $street, $home, $part, $appt, $floor);
+/*
+ * Если пользак не авторизован по сессии или кукам или текущая переданная почта не соответствует почте авторизованного:
+ * Проверим есть ли он в БД по переданному Email
+ * Если есть то логиним (пишем сессию и куку) и обновляем инфу по нему (адрес, итд)
+ * Если нет то регаем и логиним (пишем сессию и куку)
+ */
+if (!$curUser->isLogged() || $curUser->mail != $formData->mail) {
+    $userExists = $user->findUserBy('mail', $formData->mail);
+    if ($userExists) {
+        $curUser->login($user->id, $user->mail);
+        $curUser->updateInformation($formData);
     } else {
-        $curUser->updateInformation($userId, $name, $phone, $street, $home, $part, $appt, $floor);
+        $userId = $user->register($formData);
+        $curUser->login($userId, $formData->mail);
     }
-    $curUser->login($userId, $mail);
 } else {
-    $curUser->updateInformation($curUser->id, $name, $phone, $street, $home, $part, $appt, $floor);
+    $curUser->updateInformation($formData);
 }
 
+$objOrder = new Order($curUser);
+$orderId = $objOrder->createOrder($formData);
 
-$arrOrder = [$curUser->id, $addr, $comment, $needChange, $cardPayment, $callback];
-DB::run("INSERT INTO orders (user_id, order_date, address, `comment`, need_change, card_payment, not_call) VALUES (?, NOW(), ?, ?, ?, ?, ?)", $arrOrder);
-$orderId = DB::lastInsertId();
+if (!$orderId) {
+    // error, unknown error
+    die('Во время заказа произошла ошибка, попробуйте позже!');
+}
 
-$ordersCnt = DB::run("SELECT COUNT(id) FROM orders WHERE user_id = ?", [$curUser->id])->fetchColumn();
-$ordersCnt = ($ordersCnt == 1) ? "первый" : $ordersCnt;
+$ordersByThisUser = $curUser->getOrdersCount();
+$ordersByThisUser = ($ordersByThisUser == 1) ? "первый" : $ordersByThisUser;
 
 $mailText = <<<EOT
 Заказ №{$orderId}
@@ -76,13 +52,12 @@ $mailText = <<<EOT
 DarkBeefBurger, 500 рублей, 1 шт.
 
 Ваш заказ будет доставлен по адресу:
-{$addr}
+{$objOrder->address}
 
-Спасибо - это ваш {$ordersCnt} заказ!
+Спасибо - это ваш {$ordersByThisUser} заказ!
 EOT;
 
-
-mail($mail, "Заказ №{$orderId}", $mailText);
+mail($curUser->mail, "Заказ №{$orderId}", $mailText);
 ?>
 <!DOCTYPE html>
 <html lang="ru">
