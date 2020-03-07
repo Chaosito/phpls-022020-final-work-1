@@ -1,0 +1,19 @@
+{
+    "name": "sergey/finalwork1",
+    "description": "final-work 1 at loftschool",
+    "type": "project",
+    "require": {
+        "swiftmailer/swiftmailer": "^6.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "FinalWork\\": "classes/FinalWork/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergey Aleinikov",
+            "email": "chaositomail@gmail.com"
+        }
+    ]
+}
