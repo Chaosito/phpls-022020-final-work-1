@@ -1,6 +1,8 @@
 <?php
 require_once("config.php");
 
+use FinalWork\Settings;
+
 if (isset($_REQUEST['logout'])) {
     $curUser->logout();
     header('Location: index.php#link-lets-order');
@@ -58,7 +60,29 @@ DarkBeefBurger, 500 рублей, 1 шт.
 Спасибо - это ваш {$ordersByThisUser} заказ!
 EOT;
 
-mail($curUser->mail, "Заказ №{$orderId}", $mailText);
+//mail($curUser->mail, "Заказ №{$orderId}", $mailText);
+
+// To-Do: change this, all code to other file
+try {
+    $transport = (new Swift_SmtpTransport(Settings::MAIL_SERVER, Settings::MAIL_PORT))
+        ->setUsername(Settings::MAIL_USER)
+        ->setPassword(Settings::MAIL_PASS)
+        ->setEncryption(Settings::MAIL_ENCRYPTION);
+
+// Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
+
+// Create a message
+    $message = (new Swift_Message("Заказ №{$orderId}"))
+        ->setFrom([Settings::MAIL_USER => Settings::MAIL_FROM_NAME])
+        ->setTo([$curUser->mail])
+        ->setBody($mailText);
+
+// Send the message
+    $result = $mailer->send($message);
+} catch (Exception $e) {}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
