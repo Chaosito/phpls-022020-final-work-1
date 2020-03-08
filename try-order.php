@@ -63,6 +63,7 @@ EOT;
 //mail($curUser->mail, "Заказ №{$orderId}", $mailText);
 
 // To-Do: change this, all code to other file
+// Домашнее задание №5.1.3 (Добавьте отправление письма после регистрации в приложение из ВП1.)
 try {
     $transport = (new Swift_SmtpTransport(Settings::MAIL_SERVER, Settings::MAIL_PORT))
         ->setUsername(Settings::MAIL_USER)
