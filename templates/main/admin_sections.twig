@@ -1,0 +1,81 @@
+<section class="section hero" style="height:auto;">
+    <div class="container">
+        <header class="header">
+            <div class="header__logo">
+                <a class="logo" href="/"><img class="logo__icon" src="/img/icons/logo.svg"></a>
+            </div>
+            <div class="header__menu">
+                <nav class="nav">
+                    <ul class="nav__list">
+                        <li class="nav__item"><a class="nav__link" href="/index.php#link-about">о нас</a>
+                        </li>
+                        <li class="nav__item"><a class="nav__link" href="/index.php#link-burgers">бургеры</a>
+                        </li>
+                        <li class="nav__item"><a class="nav__link" href="/index.php#link-team">команда</a>
+                        </li>
+                        <li class="nav__item"><a class="nav__link" href="/index.php#link-menu">меню</a>
+                        </li>
+                        <li class="nav__item"><a class="nav__link" href="/index.php#link-reviews">отзывы</a>
+                        </li>
+                        <li class="nav__item"><a class="nav__link" href="/index.php#link-map">контакты</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="header__links">
+                <a class="order-link btn" href="/index.php#link-lets-order">Заказать</a>
+                <a class="hamburger-menu-link" href=""><div class="hamburger-menu-link__bars"></div></a>
+            </div>
+        </header>
+        <div class="hero__container">
+            <div class="hero__content" id="adminka-bg">
+                <table width="100%" border="1">
+                    <thead>
+                        <tr><th colspan="4">Список всех зарегистрированных пользователей</th></tr>
+                        <tr>
+                            <th width="5%">#id</th>
+                            <th width="20%">Reg. date</th>
+                            <th width="20%">First name</th>
+                            <th>Mail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in allUsers %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.dt }}</td>
+                                <td>{{ user.first_name }}</td>
+                                <td>{{ user.mail }}</td>
+                            </tr>
+                        {% else %}
+                            <tr><td colspan="4">No users have been found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table><br><br>
+                <table width="100%" border="1">
+                    <thead>
+                        <tr><th colspan="4">Список всех заказов</th></tr>
+                        <tr>
+                            <th width="5%">#id</th>
+                            <th width="20%">Reg. date</th>
+                            <th width="20%">First name</th>
+                            <th>Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in allOrders %}
+                            <tr>
+                                <td>{{ order.id }}</td>
+                                <td>{{ order.dt }}</td>
+                                <td>{{ order.first_name }}</td>
+                                <td>{{ order.address }}</td>
+                            </tr>
+                        {% else %}
+                            <tr><td colspan="4">No orders have been found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

@@ -3,7 +3,8 @@
     "description": "final-work 1 at loftschool",
     "type": "project",
     "require": {
-        "swiftmailer/swiftmailer": "^6.2"
+        "swiftmailer/swiftmailer": "^6.2",
+        "twig/twig": "^3.0"
     },
     "autoload": {
         "psr-4": {

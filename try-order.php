@@ -14,17 +14,9 @@ if (!isset($_POST['email'])) {
     exit;
 }
 
-
-
 $formData = new FinalWork\FormData();
 $user = new FinalWork\User();
 
-/*
- * Если пользак не авторизован по сессии или кукам или текущая переданная почта не соответствует почте авторизованного:
- * Проверим есть ли он в БД по переданному Email
- * Если есть то логиним (пишем сессию и куку) и обновляем инфу по нему (адрес, итд)
- * Если нет то регаем и логиним (пишем сессию и куку)
- */
 if (!$curUser->isLogged() || $curUser->mail != $formData->mail) {
     $userExists = $user->findUserBy('mail', $formData->mail);
     if ($userExists) {
@@ -42,8 +34,8 @@ $objOrder = new FinalWork\Order($curUser);
 $orderId = $objOrder->createOrder($formData);
 
 if (!$orderId) {
-    // error, unknown error
-    die('Во время заказа произошла ошибка, попробуйте позже!');
+    echo $twig->render('order.twig', ['error' => 'Во время заказа произошла ошибка, попробуйте позже!']);
+    die;
 }
 
 $ordersByThisUser = $curUser->getOrdersCount();
@@ -60,9 +52,6 @@ DarkBeefBurger, 500 рублей, 1 шт.
 Спасибо - это ваш {$ordersByThisUser} заказ!
 EOT;
 
-//mail($curUser->mail, "Заказ №{$orderId}", $mailText);
-
-// To-Do: change this, all code to other file
 // Домашнее задание №5.1.3 (Добавьте отправление письма после регистрации в приложение из ВП1.)
 try {
     $transport = (new Swift_SmtpTransport(Settings::MAIL_SERVER, Settings::MAIL_PORT))
@@ -70,76 +59,16 @@ try {
         ->setPassword(Settings::MAIL_PASS)
         ->setEncryption(Settings::MAIL_ENCRYPTION);
 
-// Create the Mailer using your created Transport
     $mailer = new Swift_Mailer($transport);
 
-// Create a message
     $message = (new Swift_Message("Заказ №{$orderId}"))
         ->setFrom([Settings::MAIL_USER => Settings::MAIL_FROM_NAME])
         ->setTo([$curUser->mail])
         ->setBody($mailText);
 
-// Send the message
     $result = $mailer->send($message);
-} catch (Exception $e) {}
+} catch (Exception $e) {
+/* resend msg or write to log */
+}
 
-
-?>
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Главная страница
-    </title>
-    <link rel="stylesheet" href="./css/vendors.min.css">
-    <link rel="stylesheet" href="./css/main.min.css">
-</head>
-<body>
-<div class="wrapper">
-    <div class="maincontent">
-        <section class="section hero">
-            <div class="container">
-                <header class="header">
-                    <div class="header__logo">
-                        <a class="logo" href="/"><img class="logo__icon" src="./img/icons/logo.svg"></a>
-                    </div>
-                    <div class="header__menu">
-                        <nav class="nav">
-                            <ul class="nav__list">
-                                <li class="nav__item"><a class="nav__link" href="/index.php#link-about">о нас</a>
-                                </li>
-                                <li class="nav__item"><a class="nav__link" href="/index.php#link-burgers">бургеры</a>
-                                </li>
-                                <li class="nav__item"><a class="nav__link" href="/index.php#link-team">команда</a>
-                                </li>
-                                <li class="nav__item"><a class="nav__link" href="/index.php#link-menu">меню</a>
-                                </li>
-                                <li class="nav__item"><a class="nav__link" href="/index.php#link-reviews">отзывы</a>
-                                </li>
-                                <li class="nav__item"><a class="nav__link" href="/index.php#link-map">контакты</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="header__links">
-                        <a class="order-link btn" href="/index.php#link-lets-order">Заказать</a>
-                        <a class="hamburger-menu-link" href=""><div class="hamburger-menu-link__bars"></div></a>
-                    </div>
-                </header>
-                <div class="hero__container">
-                    <div class="hero__content">
-                        <div class="hero__left"><img class="hero__img" src="./img/content/burger.png" alt=""></div>
-                        <div class="hero__right">
-                            <div class="section__title" style="color:#00C832">Заказ принят</div>
-                            <div class="hero__desc">Мы доставим его в течении часа</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-</div>
-</body>
-</html>
+echo $twig->render('order.twig');
