@@ -1,6 +1,8 @@
 <?php
-
 namespace FinalWork;
+
+use Service\Globals\AdapterPost;
+use Service\Globals\GlobalsFactory as GF;
 
 class FormData
 {
@@ -18,26 +20,27 @@ class FormData
 
     public function __construct()
     {
-        $this->name = $this->tryString($_POST['name']);
-        $this->phone = $this->tryString($_POST['phone']);
-        $this->mail = $this->tryString($_POST['email']);
-        $this->street = $this->tryString($_POST['street']);
-        $this->house = $this->tryString($_POST['home']);
-        $this->building = $this->tryString($_POST['part']);
-        $this->apartment = $this->tryString($_POST['appt']);
-        $this->floor = $this->tryString($_POST['floor']);
-        $this->comment = $this->tryString($_POST['comment']);
-        $this->payment = $this->tryString($_POST['payment']);
-        $this->notCall = $this->tryInt($_POST['callback']);
+        GF::init(new AdapterPost());
+        $this->name = $this->tryString(GF::get('name', ''));
+        $this->phone = $this->tryString(GF::get('phone', ''));
+        $this->mail = $this->tryString(GF::get('email', ''));
+        $this->street = $this->tryString(GF::get('street', ''));
+        $this->house = $this->tryString(GF::get('home', ''));
+        $this->building = $this->tryString(GF::get('part', ''));
+        $this->apartment = $this->tryString(GF::get('appt', ''));
+        $this->floor = $this->tryString(GF::get('floor', ''));
+        $this->comment = $this->tryString(GF::get('comment', ''));
+        $this->payment = $this->tryString(GF::get('payment', ''));
+        $this->notCall = $this->tryInt(GF::get('callback', ''));
     }
 
     private function tryString($inputData)
     {
-        return (!empty($inputData) ? strip_tags(trim($inputData)) : '');
+        return strip_tags(trim($inputData));
     }
 
     private function tryInt($inputData)
     {
-        return (!empty($inputData) ? (int)$inputData : 0);
+        return (int)$inputData;
     }
 }
