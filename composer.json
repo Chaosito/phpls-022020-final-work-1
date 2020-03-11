@@ -4,11 +4,13 @@
     "type": "project",
     "require": {
         "swiftmailer/swiftmailer": "^6.2",
-        "twig/twig": "^3.0"
+        "twig/twig": "^3.0",
+        "phpunit/phpunit": "^9.0"
     },
     "autoload": {
         "psr-4": {
-            "FinalWork\\": "classes/FinalWork/"
+            "FinalWork\\": "classes/FinalWork/",
+            "Service\\": "classes/Service/"
         }
     },
     "authors": [

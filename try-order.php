@@ -1,9 +1,10 @@
 <?php
+namespace FinalWork;
+
 require_once("config.php");
 
-use FinalWork\Settings;
-
 if (isset($_REQUEST['logout'])) {
+
     $curUser->logout();
     header('Location: index.php#link-lets-order');
     exit;
@@ -14,8 +15,8 @@ if (!isset($_POST['email'])) {
     exit;
 }
 
-$formData = new FinalWork\FormData();
-$user = new FinalWork\User();
+$formData = new FormData();
+$user = new User();
 
 if (!$curUser->isLogged() || $curUser->mail != $formData->mail) {
     $userExists = $user->findUserBy('mail', $formData->mail);
@@ -30,7 +31,7 @@ if (!$curUser->isLogged() || $curUser->mail != $formData->mail) {
     $curUser->updateInformation($formData);
 }
 
-$objOrder = new FinalWork\Order($curUser);
+$objOrder = new Order($curUser);
 $orderId = $objOrder->createOrder($formData);
 
 if (!$orderId) {
@@ -54,21 +55,22 @@ EOT;
 
 // Домашнее задание №5.1.3 (Добавьте отправление письма после регистрации в приложение из ВП1.)
 try {
-    $transport = (new Swift_SmtpTransport(Settings::MAIL_SERVER, Settings::MAIL_PORT))
+    $transport = (new \Swift_SmtpTransport(Settings::MAIL_SERVER, Settings::MAIL_PORT))
         ->setUsername(Settings::MAIL_USER)
         ->setPassword(Settings::MAIL_PASS)
         ->setEncryption(Settings::MAIL_ENCRYPTION);
 
-    $mailer = new Swift_Mailer($transport);
+    $mailer = new \Swift_Mailer($transport);
 
-    $message = (new Swift_Message("Заказ №{$orderId}"))
+    $message = (new \Swift_Message("Заказ №{$orderId}"))
         ->setFrom([Settings::MAIL_USER => Settings::MAIL_FROM_NAME])
         ->setTo([$curUser->mail])
         ->setBody($mailText);
 
     $result = $mailer->send($message);
-} catch (Exception $e) {
+} catch (\Exception $e) {
 /* resend msg or write to log */
 }
+
 
 echo $twig->render('order.twig');

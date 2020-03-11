@@ -1,7 +1,6 @@
 <?php
-require_once("../config.php");
+namespace FinalWork;
 
-$allUsers = FinalWork\User::getAllUsers();
-$allOrders = FinalWork\Order::getAllOrders();
+require_once("../config.php");
 
 echo $twig->render('admin.twig', ['allUsers' => $allUsers, 'allOrders' => $allOrders]);
