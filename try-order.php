@@ -3,8 +3,10 @@ namespace FinalWork;
 
 require_once("config.php");
 
-if (isset($_REQUEST['logout'])) {
+/** @var $curUser CurrentUser */
+/** @var $twig \Twig\Environment */
 
+if (isset($_REQUEST['logout'])) {
     $curUser->logout();
     header('Location: index.php#link-lets-order');
     exit;
