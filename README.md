@@ -1,6 +1,6 @@
 # phpls-022020-final-work-1
 
-Выпускной проект №1 - "Бургерная"
+## Выпускной проект №1 - "Бургерная"
 
 1. git clone repository
 2. composer update
